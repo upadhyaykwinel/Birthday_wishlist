@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Birthday Wish Book</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Gaegu:wght@400;700&family=Nunito:wght@400;600;800&display=swap">
+<style>
+html{margin:0} body{margin:0} [hidden]{display:none!important} img{max-width:100%}
+
+/* Layout: a scrapbook spread. Dotted pink page, tilted polaroid cards held on with washi tape,
+   budget tabs as paper tags, reserved gifts get a rubber stamp. */
+:root{
+  --bg:#fff0f5; --dot:#fbd0de; --fg:#5a2140; --fg-soft:#99587a;
+  --paper:#fffafb; --ink:#4a1c35; --ink-soft:#8c5873; --line:#f3c6d6;
+  --rose:#e8437f; --rose-deep:#bd2460; --on-rose:#fff7fa;
+  --blush:#ffc9da; --lilac:#dcc8f5; --butter:#ffe9a8; --mint:#c9ecd9; --peach:#ffd3bd;
+  --shadow:rgba(140,40,85,.18); color-scheme:light;
+  --display:"Yeseva One","Georgia",serif;
+  --hand:"Gaegu","Comic Sans MS","Bradley Hand",cursive;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg) radial-gradient(var(--dot) 1.5px, transparent 1.6px) 0 0/22px 22px;
+  color:var(--fg); font-family:var(--body); font-size:16px; line-height:1.5;
+  padding-inline:16px; padding-block:28px 96px;
+}
+.page{max-width:1080px; margin-inline:auto; display:flex; flex-direction:column; gap:28px}
+
+/* header */
+.cover{text-align:center; display:flex; flex-direction:column; align-items:center; gap:6px; position:relative}
+.cover .scribble{font-family:var(--hand); font-size:1.5rem; color:var(--rose); transform:rotate(-3deg)}
+.cover h1{font-family:var(--display); font-weight:400; font-size:clamp(2.4rem,8vw,4.4rem); line-height:1.02; margin:0; text-wrap:balance; letter-spacing:.01em}
+.cover h1 em{font-style:normal; color:var(--rose); position:relative; white-space:nowrap}
+.cover h1 em::after{content:""; position:absolute; left:-2%; right:-2%; bottom:.02em; height:.22em; background:var(--butter); z-index:-1; border-radius:40% 60% 55% 45%/60% 40% 60% 40%; transform:rotate(-1deg)}
+.cover p{margin:6px 0 0; max-width:34rem; color:var(--fg-soft); font-weight:600}
+.doodles{display:flex; gap:14px; font-size:1.3rem; color:var(--rose); letter-spacing:.2em; user-select:none}
+.doodles span:nth-child(2n){color:var(--fg-soft); transform:translateY(4px) rotate(12deg)}
+
+/* notes (banners) */
+.note{background:var(--butter); color:var(--ink); font-family:var(--hand); font-size:1.25rem; line-height:1.3;
+  padding:12px 16px; max-width:40rem; margin-inline:auto; transform:rotate(-.6deg);
+  box-shadow:2px 3px 0 var(--shadow); display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; justify-content:center; text-align:center}
+.note button{font:inherit; font-weight:700; background:var(--paper); color:var(--ink); border:2px dashed var(--rose); border-radius:999px; padding:2px 14px; cursor:pointer}
+
+/* budget tags */
+.tabs{display:flex; flex-wrap:wrap; gap:12px; justify-content:center}
+.tab{font-family:var(--body); cursor:pointer; border:0; background:var(--paper); color:var(--ink);
+  padding:10px 16px 10px 26px; position:relative; text-align:left; line-height:1.15;
+  clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%); filter:drop-shadow(2px 3px 0 var(--shadow));
+  transition:transform .15s}
+.tab::before{content:""; position:absolute; left:11px; top:50%; width:7px; height:7px; margin-top:-3.5px; border-radius:50%; background:var(--bg)}
+.tab b{display:block; font-family:var(--hand); font-size:1.3rem; font-weight:700}
+.tab small{font-size:.74rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+.tab:nth-child(odd){transform:rotate(-1.5deg)} .tab:nth-child(even){transform:rotate(1.2deg)}
+.tab:hover{transform:rotate(0) translateY(-2px)}
+.tab[aria-pressed="true"]{background:var(--rose); color:var(--on-rose)}
+.tab[aria-pressed="true"] small{color:var(--on-rose)}
+
+/* gift cards */
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:34px 26px; padding-top:8px}
+.card{background:var(--paper); color:var(--ink); padding:12px 12px 16px; position:relative; min-width:0;
+  box-shadow:3px 5px 14px var(--shadow); display:flex; flex-direction:column; gap:10px; transition:transform .2s}
+.card:nth-child(4n+1){transform:rotate(-1.4deg)} .card:nth-child(4n+2){transform:rotate(1deg)}
+.card:nth-child(4n+3){transform:rotate(-.6deg)} .card:nth-child(4n){transform:rotate(1.6deg)}
+.card:hover,.card:focus-within{transform:rotate(0) translateY(-4px)}
+.card::before{content:""; position:absolute; top:-12px; left:50%; width:92px; height:24px; margin-left:-46px; transform:rotate(-3deg); opacity:.9;
+  background:repeating-linear-gradient(45deg,var(--tape) 0 8px,var(--paper) 8px 12px)}
+.card:nth-child(5n+1){--tape:var(--blush); --tint:var(--blush)}
+.card:nth-child(5n+2){--tape:var(--lilac); --tint:var(--lilac)}
+.card:nth-child(5n+3){--tape:var(--butter); --tint:var(--butter)}
+.card:nth-child(5n+4){--tape:var(--mint); --tint:var(--mint)}
+.card:nth-child(5n){--tape:var(--peach); --tint:var(--peach)}
+.photo{aspect-ratio:4/3; max-width:100%; background:var(--tint); display:grid; place-items:center; font-size:4rem; line-height:1; position:relative; overflow:hidden}
+.photo::after{content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.55),transparent 55%)}
+.price{position:absolute; top:22px; right:-8px; background:var(--rose); color:var(--on-rose); font-weight:800; font-size:.95rem;
+  padding:4px 12px; transform:rotate(6deg); box-shadow:2px 2px 0 var(--shadow); font-variant-numeric:tabular-nums; z-index:1}
+.sample{position:absolute; top:22px; left:-6px; background:var(--paper); color:var(--ink-soft); border:1.5px dashed var(--ink-soft); font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; padding:2px 8px; transform:rotate(-7deg); z-index:1}
+.card h2{font-family:var(--hand); font-size:1.6rem; line-height:1.1; margin:2px 0 0; font-weight:700; overflow-wrap:anywhere}
+.card .why{margin:0; font-size:.9rem; color:var(--ink-soft); overflow-wrap:anywhere}
+.acts{margin-top:auto; display:flex; flex-direction:column; gap:8px; padding-top:4px}
+.btn{font:800 .92rem var(--body); border-radius:999px; padding:9px 14px; text-align:center; text-decoration:none; cursor:pointer; border:2px solid var(--rose); display:block; width:100%}
+.btn.buy{background:transparent; color:var(--rose-deep)}
+.btn.dibs{background:var(--rose); color:var(--on-rose)}
+.btn.dibs:hover{background:var(--rose-deep); border-color:var(--rose-deep)}
+.btn.quiet{border-style:dashed; border-color:var(--ink-soft); background:transparent; color:var(--ink-soft); font-weight:600}
+.btn[disabled]{opacity:.55; cursor:default}
+.soon{font-family:var(--hand); font-size:1.1rem; color:var(--ink-soft); text-align:center}
+.mine{font-family:var(--hand); font-size:1.25rem; font-weight:700; color:var(--rose-deep); text-align:center}
+.card.taken .photo{filter:grayscale(.85) opacity(.6)}
+.card.taken h2,.card.taken .why{opacity:.6}
+.card.taken .price{background:var(--ink-soft)}
+.stamp{position:absolute; left:50%; top:24%; transform:translate(-50%,-50%) rotate(-12deg); z-index:2; pointer-events:none;
+  font:400 1.5rem var(--display); letter-spacing:.14em; text-transform:uppercase; color:var(--rose-deep);
+  border:3px double var(--rose-deep); padding:4px 14px; background:color-mix(in srgb,var(--paper) 78%,transparent); white-space:nowrap}
+.empty{grid-column:1/-1; text-align:center; font-family:var(--hand); font-size:1.5rem; color:var(--fg-soft); padding:40px 0}
+
+/* owner's add form */
+.desk{background:var(--paper); color:var(--ink); padding:20px; max-width:40rem; width:100%; margin-inline:auto; box-shadow:3px 5px 14px var(--shadow); position:relative; transform:rotate(.4deg)}
+.desk::before{content:""; position:absolute; top:-12px; left:30px; width:110px; height:24px; transform:rotate(-4deg); background:repeating-linear-gradient(45deg,var(--lilac) 0 8px,var(--paper) 8px 12px)}
+.desk h2{font-family:var(--display); font-weight:400; font-size:1.5rem; margin:0 0 4px}
+.desk p{margin:0 0 14px; color:var(--ink-soft); font-size:.9rem}
+.fields{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.fields label{display:flex; flex-direction:column; gap:4px; font-size:.74rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); min-width:0}
+.fields .wide{grid-column:1/-1}
+.fields input{font:600 1rem var(--body); color:var(--ink); background:transparent; border:0; border-bottom:2px dashed var(--line); padding:6px 2px; min-width:0; width:100%; color-scheme:light}
+.fields input:focus{outline:0; border-bottom-color:var(--rose)}
+.desk .btn{margin-top:16px}
+.err{color:var(--rose-deep); font-weight:800; font-size:.9rem; margin:10px 0 0}
+@media (max-width:480px){.fields{grid-template-columns:1fr}}
+
+:focus-visible{outline:3px solid var(--rose); outline-offset:3px}
+.toast{position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:999px; font-weight:800; font-size:.92rem; max-width:calc(100% - 32px); text-align:center; z-index:10; box-shadow:0 4px 14px var(--shadow)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.foot{text-align:center; font-size:.85rem; color:var(--fg-soft)}
+.foot button{font:inherit; color:inherit; background:none; border:0; text-decoration:underline; cursor:pointer; padding:6px}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="cover">
+    <div class="scribble" id="scribble">it's almost my birthday!</div>
+    <h1><span id="who">My</span> Birthday <em>Wish Book</em></h1>
+    <div class="doodles" aria-hidden="true"><span>♡</span><span>✿</span><span>★</span><span>✿</span><span>♡</span></div>
+    <p>Pick a budget, pick a present, and tap “I'm getting this” so nobody else brings the same thing.</p>
+  </header>
+  <div id="notes"></div>
+  <nav class="tabs" id="tabs" aria-label="Budget"></nav>
+  <main class="grid" id="grid" aria-live="polite"></main>
+  <footer class="foot"><button type="button" id="shieldBtn"></button></footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="wishes.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const CFG=window.WISHBOOK||{}, FB=window.FIREBASE_CONFIG||{};
+const CUR=CFG.currency||'₹', LOCALE=CUR==='₹'?'en-IN':undefined;
+const money=n=>CUR+Number(n).toLocaleString(LOCALE);
+const fbReady=!!(FB.apiKey&&FB.projectId&&!/PASTE/i.test(FB.apiKey+FB.projectId));
+const $=id=>document.getElementById(id);
+function el(tag,props,...kids){const n=document.createElement(tag);for(const k in props||{}){const v=props[k];if(k==='class')n.className=v;else if(k==='text')n.textContent=v;else if(k.startsWith('on'))n.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)n.setAttribute(k,v===true?'':v)}for(const c of kids)if(c)n.append(c);return n}
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const safeUrl=u=>{try{const x=new URL(u);return x.protocol==='https:'||x.protocol==='http:'?x.href:null}catch(e){return null}};
+const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80)||'wish';
+let toastT;function toast(m){const t=$('toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3600)}
+
+// budgets: each one runs from the previous "upTo" to its own
+const BUDGETS=[{id:'all',label:'Everything',range:'all budgets',min:0,max:Infinity}];
+(CFG.budgets||[]).forEach((b,i,arr)=>{
+  const min=i?Number(arr[i-1].upTo)||0:0, max=b.upTo==null?Infinity:Number(b.upTo);
+  const range=max===Infinity?money(min)+' and up':(min?money(min)+' to '+money(max):'under '+money(max));
+  BUDGETS.push({id:'b'+i,label:b.name,range,min,max});
+});
+const GIFTS=(CFG.wishes||[]).filter(w=>w&&w.name).map(w=>({...w,price:Number(w.price)||0,id:slug(w.id||w.name)}));
+const inBudget=(g,b)=>g.price>=b.min&&g.price<b.max;
+
+// live: 'loading' | 'on' | 'off' (not set up) | 'error'
+const S={live:fbReady?'loading':'off',claims:{},tab:'all',busy:{},mine:store.get('wb-mine')||{},shield:store.get('wb-shield')===true};
+let F=null, fdb=null;
+
+function renderNotes(){
+  const box=$('notes');box.replaceChildren();
+  if(S.shield)box.append(el('div',{class:'note',text:'Surprise mode is on, so reserved gifts still look free on this device.'}));
+  else if(S.live==='off')box.append(el('div',{class:'note',text:'Reserving isn’t switched on yet. You can still browse and use the buy links.'}));
+  else if(S.live==='error')box.append(el('div',{class:'note',text:'Couldn’t load which gifts are reserved. Refresh the page to try again.'}));
+  $('shieldBtn').textContent=S.shield?'Turn surprise mode off':'I’m the birthday girl: hide what’s been reserved';
+}
+function renderTabs(){
+  const nav=$('tabs');nav.replaceChildren();
+  for(const b of BUDGETS){
+    const n=GIFTS.filter(g=>inBudget(g,b)).length;
+    nav.append(el('button',{class:'tab',type:'button','aria-pressed':String(S.tab===b.id),onclick(){S.tab=b.id;store.set('wb-tab',b.id);render()}},
+      el('b',{text:b.label}),el('small',{text:b.range+' · '+n})));
+  }
+}
+function card(g){
+  const taken=!S.shield&&!!S.claims[g.id], mine=taken&&!!S.mine[g.id], busy=!!S.busy[g.id];
+  const c=el('article',{class:'card'+(taken?' taken':'')});
+  c.append(el('span',{class:'price',text:money(g.price)}));
+  if(g.sample)c.append(el('span',{class:'sample',text:'sample'}));
+  if(taken)c.append(el('span',{class:'stamp',text:mine?'Yours':'Taken'}));
+  const photo=el('div',{class:'photo'},el('span',{'aria-hidden':'true',text:g.emoji||'🎁'}));
+  if(g.image)photo.append(el('img',{src:g.image,alt:g.name,loading:'lazy',onerror(e){e.target.remove()}}));
+  c.append(photo,el('h2',{text:g.name}));
+  if(g.note)c.append(el('p',{class:'why',text:g.note}));
+  const acts=el('div',{class:'acts'}), url=safeUrl(g.link);
+  const buy=()=>url?el('a',{class:'btn buy',href:url,target:'_blank',rel:'noopener',text:'Buy it here ↗'}):el('div',{class:'soon',text:'link coming soon'});
+  if(mine){
+    acts.append(el('div',{class:'mine',text:'You’re getting this ♡'}),url?buy():null,
+      el('button',{class:'btn quiet',type:'button',disabled:busy,text:'Changed my mind',onclick:()=>unclaim(g.id)}));
+  }else if(taken){
+    acts.append(el('div',{class:'soon',text:'Someone’s already got this one'}));
+  }else{
+    acts.append(buy());
+    if(S.live==='on'&&!S.shield)acts.append(el('button',{class:'btn dibs',type:'button',disabled:busy,text:busy?'Reserving…':'I’m getting this',onclick:()=>claim(g.id)}));
+  }
+  c.append(acts);return c;
+}
+function renderGrid(){
+  const grid=$('grid');grid.replaceChildren();
+  const b=BUDGETS.find(x=>x.id===S.tab)||BUDGETS[0];
+  const list=GIFTS.filter(g=>inBudget(g,b)).sort((a,z)=>a.price-z.price);
+  if(!GIFTS.length)grid.append(el('div',{class:'empty',text:'No wishes on the page yet. Check back soon!'}));
+  else if(!list.length)grid.append(el('div',{class:'empty',text:'Nothing in this budget yet. Try another tag!'}));
+  else for(const g of list)grid.append(card(g));
+}
+function render(){renderNotes();renderTabs();renderGrid()}
+
+async function claim(id){
+  if(!fdb||S.busy[id])return;S.busy[id]=1;render();
+  try{
+    await F.runTransaction(fdb,async tx=>{
+      const ref=F.doc(fdb,'claims',id), snap=await tx.get(ref);
+      if(snap.exists())throw new Error('taken');
+      tx.set(ref,{at:Date.now()});
+    });
+    S.mine[id]=1;store.set('wb-mine',S.mine);toast('Reserved! It’s all yours to gift.');
+  }catch(e){toast(e&&e.message==='taken'?'Someone just reserved this one!':'That didn’t save. Please try again in a moment.')}
+  delete S.busy[id];render();
+}
+async function unclaim(id){
+  if(!fdb||S.busy[id])return;S.busy[id]=1;render();
+  try{await F.deleteDoc(F.doc(fdb,'claims',id));delete S.mine[id];store.set('wb-mine',S.mine);toast('Back on the list for someone else.')}
+  catch(e){toast('That didn’t save. Please try again in a moment.')}
+  delete S.busy[id];render();
+}
+async function connect(){
+  if(!fbReady)return;
+  try{
+    const base='https://www.gstatic.com/firebasejs/10.12.2/';
+    const [app,fs]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-firestore.js')]);
+    F=fs;fdb=fs.getFirestore(app.initializeApp(FB));
+    fs.onSnapshot(fs.collection(fdb,'claims'),q=>{const m={};q.forEach(d=>{m[d.id]=true});S.claims=m;S.live='on';render()},()=>{S.live='error';render()});
+  }catch(e){S.live='error';render()}
+}
+
+$('shieldBtn').addEventListener('click',()=>{S.shield=!S.shield;store.set('wb-shield',S.shield);render()});
+if(CFG.name){$('who').textContent=CFG.name+(/s$/i.test(CFG.name)?'’':'’s');document.title=$('who').textContent+' Birthday Wish Book'}
+if(CFG.birthday)$('scribble').textContent='the big day: '+CFG.birthday;
+const t=store.get('wb-tab');if(BUDGETS.some(b=>b.id===t))S.tab=t;
+render();connect();
+</script>
+</body>
+</html>
